@@ -5,7 +5,7 @@ with open("README.md", 'r') as f:
 
 setup(
     name='sunshine-trigger',
-    version='1.0',
+    version='1.0.1',
     author='Christophe Godart',
     author_email='51CGO@lilo.org',
     description='Tool for executing commands on sunrise and sunset',
