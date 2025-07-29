@@ -49,7 +49,7 @@ class SunshineTrigger(threading.Thread):
                     self.sunshine = False
                     self.next_sunrise = self.calendar.riseutc(now.date() + datetime.timedelta(days=1)).replace(tzinfo=datetime.timezone.utc)
                     self.logger.debug("Next sunrise : %s" % self.next_sunrise)
-                    self.on_self.next_sunset()
+                    self.on_sunset()
 
             else:
 
@@ -58,7 +58,7 @@ class SunshineTrigger(threading.Thread):
                     self.sunshine = True
                     self.next_sunset = self.calendar.setutc(now.date()).replace(tzinfo=datetime.timezone.utc)
                     self.logger.debug("Next sunset : %s" % self.next_sunset)
-                    self.on_self.next_sunrise()
+                    self.on_sunrise()
 
             time.sleep(1)
 
