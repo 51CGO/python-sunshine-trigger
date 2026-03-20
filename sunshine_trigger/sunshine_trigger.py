@@ -9,22 +9,24 @@ import suntimes
 class SunshineTrigger(threading.Thread):
 
     def __init__(self, lattitude, longitude):
-        
-        super().__init__()
+
+        threading.Thread.__init__(self)
 
         self.logger = logging.getLogger("SunshineTrigger")
         self.calendar = suntimes.SunTimes(longitude, lattitude)
 
         self.do_run = True
         self.sunshine = True
-        
+
         now = datetime.datetime.now(datetime.timezone.utc)
         self.logger.debug("Now : %s" % now)
 
-        self.next_sunrise = self.calendar.riseutc(now.date()).replace(tzinfo=datetime.timezone.utc)
+        self.next_sunrise = self.calendar.riseutc(now.date()).replace(
+            tzinfo=datetime.timezone.utc)
         self.logger.debug("Next sunrise : %s" % self.next_sunrise)
-        
-        self.next_sunset = self.calendar.setutc(now.date()).replace(tzinfo=datetime.timezone.utc)
+
+        self.next_sunset = self.calendar.setutc(now.date()).replace(
+            tzinfo=datetime.timezone.utc)
         self.logger.debug("Next sunset : %s" % self.next_sunset)
 
         if now > self.next_sunrise and now < self.next_sunset:
@@ -37,7 +39,7 @@ class SunshineTrigger(threading.Thread):
     def run(self):
 
         self.logger.debug("run")
-            
+
         while self.do_run:
 
             now = datetime.datetime.now(datetime.timezone.utc)
@@ -45,18 +47,22 @@ class SunshineTrigger(threading.Thread):
             if self.sunshine:
 
                 if now > self.next_sunset:
-                    self.logger.debug("Night has fallen")                    
+                    self.logger.debug("Night has fallen")
                     self.sunshine = False
-                    self.next_sunrise = self.calendar.riseutc(now.date() + datetime.timedelta(days=1)).replace(tzinfo=datetime.timezone.utc)
+                    self.next_sunrise = self.calendar.riseutc(
+                        now.date() + datetime.timedelta(days=1)
+                    ).replace(tzinfo=datetime.timezone.utc)
                     self.logger.debug("Next sunrise : %s" % self.next_sunrise)
                     self.on_sunset()
 
             else:
 
                 if now > self.next_sunrise:
-                    self.logger.debug("Day has raised")                    
+                    self.logger.debug("Day has raised")
                     self.sunshine = True
-                    self.next_sunset = self.calendar.setutc(now.date()).replace(tzinfo=datetime.timezone.utc)
+                    self.next_sunset = self.calendar.setutc(
+                        now.date()
+                    ).replace(tzinfo=datetime.timezone.utc)
                     self.logger.debug("Next sunset : %s" % self.next_sunset)
                     self.on_sunrise()
 
@@ -69,5 +75,6 @@ class SunshineTrigger(threading.Thread):
         self.logger.debug("on_sunset")
 
     def join(self):
+        self.logger.debug("join")
         self.do_run = False
-        super().join()
+        threading.Thread.join(self)

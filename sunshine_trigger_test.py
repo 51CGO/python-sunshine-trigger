@@ -16,11 +16,19 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.debug:
-        logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s")
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format="%(asctime)s %(levelname)s %(message)s"
+        )
     else:
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s %(levelname)s %(message)s"
+        )
 
-    sunshine_trigger = sunshine_trigger.SunshineTrigger(args.lattitude, args.longitude)
+    sunshine_trigger = sunshine_trigger.SunshineTrigger(
+        args.lattitude, args.longitude
+    )
 
     signal.signal(signal.SIGTERM, sunshine_trigger.join)
 
