@@ -12,6 +12,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("lattitude", type=float)
     parser.add_argument("longitude", type=float)
+    parser.add_argument("--test-duration", type=int, default=0)
     parser.add_argument("--debug", action="store_true")
     args = parser.parse_args()
 
@@ -27,7 +28,7 @@ if __name__ == "__main__":
         )
 
     sunshine_trigger = sunshine_trigger.SunshineTrigger(
-        args.lattitude, args.longitude
+        args.lattitude, args.longitude, args.test_duration
     )
 
     signal.signal(signal.SIGTERM, sunshine_trigger.join)
