@@ -8,11 +8,14 @@ import suntimes
 
 class SunshineTrigger(threading.Thread):
 
-    def __init__(self, lattitude, longitude, test_duration=0):
+    def __init__(self, latitude, longitude, test_duration=0):
 
         threading.Thread.__init__(self)
 
         self.logger = logging.getLogger("SunshineTrigger")
+
+        self.latitude = latitude
+        self.longitude = longitude
 
         self.do_run = True
         self.test_duration = test_duration
@@ -47,7 +50,7 @@ class SunshineTrigger(threading.Thread):
 
             return
 
-        self.calendar = suntimes.SunTimes(longitude, lattitude)
+        self.calendar = suntimes.SunTimes(self.longitude, self.latitude)
 
         dt_now = datetime.datetime.now(datetime.timezone.utc)
         self.logger.debug("Now : %s" % dt_now)
